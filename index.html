@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Request Resubmitter</title>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            function getQueryParams() {
+                const params = {};
+                const queryString = window.location.search.substring(1);
+                const vars = queryString.split('&');
+                vars.forEach(function (param) {
+                    const pair = param.split('=');
+                    params[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1]);
+                });
+                return params;
+            }
+
+            async function resubmitRequest(params) {
+                const url = new URL('https://evotingghana.com/transaction-confirm');
+                Object.keys(params).forEach(key => url.searchParams.append(key, params[key]));
+
+                try {
+                    const response = await fetch(url);
+                    const result = await response.text();
+                    console.log('Response from aaaa.com:', result);
+                } catch (error) {
+                    console.error('Error resubmitting request:', error);
+                }
+            }
+
+            const params = getQueryParams();
+            if (Object.keys(params).length > 0) {
+                resubmitRequest(params);
+            }
+        });
+    </script>
+</head>
+<body>
+    <h1>Request Resubmitter</h1>
+    <p>This page will resubmit GET requests to another URL.</p>
+</body>
+</html>
